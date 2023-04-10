@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:go_router/go_router.dart';
 import 'package:todo_app/presentation/view/home.dart';
 import 'package:todo_app/presentation/view/todos_list.dart';

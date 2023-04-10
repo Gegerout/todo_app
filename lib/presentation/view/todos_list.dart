@@ -29,6 +29,12 @@ class TodosList extends ConsumerWidget {
             child: CircularProgressIndicator(),
           )
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).pushNamed('todos/create');
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
