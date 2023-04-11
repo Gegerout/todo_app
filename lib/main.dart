@@ -3,5 +3,5 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/presentation/app.dart';
 
 void main() {
-  runApp(ProviderScope(child: TodosApp()));
+  runApp(const ProviderScope(child: TodosApp()));
 }
