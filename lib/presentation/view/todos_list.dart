@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todo_app/presentation/viewmodel/module.dart';
 
+import '../../domain/usecases/module.dart';
+
 class TodosList extends ConsumerWidget {
   const TodosList({Key? key}) : super(key: key);
 
@@ -13,7 +15,7 @@ class TodosList extends ConsumerWidget {
         automaticallyImplyLeading: false,
         title: const Text("Todos"),
       ),
-      body: ref.watch(getTodosProvider).map(
+      body: ref.watch(todosListProvider).map(
           data: (todos) => ListView.builder(
             itemCount: todos.value.values.length,
             itemBuilder: (context, index) {
