@@ -6,7 +6,7 @@ import '../../domain/models/todos.dart';
 part "module.g.dart";
 
 @riverpod
-Future<Todos> getTodos(GetTodosRef ref) async {
+Future<Todos> todosList(GetTodosRef ref) async {
   final todos = ref.watch(todosProvider);
   final items = await todos.loadTodos();
   return items;
