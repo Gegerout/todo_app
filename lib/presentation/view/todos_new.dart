@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shortid/shortid.dart';
 import 'package:todo_app/domain/models/todo.dart';
 import 'package:todo_app/domain/usecases/module.dart';
+import 'package:todo_app/presentation/viewmodel/module.dart';
 
 class TodosNew extends ConsumerStatefulWidget {
   const TodosNew({Key? key}) : super(key: key);
@@ -17,6 +18,7 @@ class _TodosNewState extends ConsumerState<TodosNew> {
   final title = TextEditingController();
   final description = TextEditingController();
   late final saveTodo = ref.read(saveTodoProvider);
+  late final todosList = ref.read(todosListModel);
   bool isCompleted = false;
 
   @override
@@ -76,6 +78,7 @@ class _TodosNewState extends ConsumerState<TodosNew> {
             final router = GoRouter.of(context);
 
             await saveTodo.execute(todo);
+            await todosList.loadTodos();
             messenger.toast("Todo saved");
             if(router.canPop()) router.pop();
           }
