@@ -10,35 +10,39 @@ class TodosList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final todos = ref.watch(todosListState);
+    final activeTodos = todos.values.where((todo) => !todo.completed).toList();
 
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Text("Todos"),
       ),
-      body: todos.values.isEmpty ? const Center(child: Text("No Todos found"),) : ListView.builder(
-            itemCount: todos.values.length,
-            itemBuilder: (context, index) {
-              final todo = todos.values[index];
-              return ListTile(
-                title: Text(todo.title),
-                subtitle: todo.description != null ? Text(todo.description!) : null,
-                // },
-                onTap: () {
-                  context.push('/todos/${todo.id}');
-                },
-                trailing: Checkbox(
-                  value: todo.completed,
-                  onChanged: (value) {
-                    if(value != null) {
-                      final newTodo = todo.copyWith(completed: value);
-                      ref.read(todosListModel).save(newTodo);
-                    }
+      body: todos.values.isEmpty ? const Center(child: Text("No Todos found"),) : Column(
+        children: [ListView.builder(
+              itemCount: todos.values.length,
+              itemBuilder: (context, index) {
+                final todo = todos.values[index];
+                return ListTile(
+                  title: Text(todo.title),
+                  subtitle: todo.description != null ? Text(todo.description!) : null,
+                  // },
+                  onTap: () {
+                    context.push('/todos/${todo.id}');
                   },
-                ),
-              );
-            },
-          ),
+                  trailing: Checkbox(
+                    value: todo.completed,
+                    onChanged: (value) {
+                      if(value != null) {
+                        final newTodo = todo.copyWith(completed: value);
+                        ref.read(todosListModel).save(newTodo);
+                      }
+                    },
+                  ),
+                );
+              },
+            ),
+      ]
+      ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           context.go('/todos/new');
