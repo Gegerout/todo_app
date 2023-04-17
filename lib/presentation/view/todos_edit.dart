@@ -125,7 +125,7 @@ class _TodosEditState extends ConsumerState<TodosEdit> {
             _formKey.currentState!.save();
 
             final todo = Todo(
-                id: shortid.generate(),
+                id: widget.todoId ?? shortid.generate(),
                 title: title.text,
                 description: description.text,
                 completed: isCompleted);
