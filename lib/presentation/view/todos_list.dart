@@ -21,15 +21,18 @@ class TodosList extends ConsumerWidget {
             itemCount: todos.values.length,
             itemBuilder: (context, index) {
               final todo = todos.values[index];
-              return CheckboxListTile(
+              return ListTile(
                 title: Text(todo.title),
                 subtitle: todo.description != null ? Text(todo.description!) : null,
-                value: todo.completed,
-                onChanged: (value) async {
-                  if(value != null) {
-                    final newTodo = todo.copyWith(completed: value);
-                    await model.save(newTodo);
-                  }
+                // value: todo.completed,
+                // onChanged: (value) async {
+                //   if(value != null) {
+                //     final newTodo = todo.copyWith(completed: value);
+                //     await model.save(newTodo);
+                //   }
+                // },
+                onTap: () {
+                  context.push('/todos/${todo.id}');
                 },
               );
             },

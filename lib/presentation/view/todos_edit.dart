@@ -6,14 +6,15 @@ import 'package:todo_app/domain/models/todo.dart';
 import 'package:todo_app/presentation/viewmodel/module.dart';
 import 'package:todo_app/presentation/widgets/extensions.dart';
 
-class TodosNew extends ConsumerStatefulWidget {
-  const TodosNew({Key? key}) : super(key: key);
+class TodosEdit extends ConsumerStatefulWidget {
+  const TodosEdit({super.key, this.todoId});
+  final String? todoId;
 
   @override
-  ConsumerState<TodosNew> createState() => _TodosNewState();
+  ConsumerState<TodosEdit> createState() => _TodosEditState();
 }
 
-class _TodosNewState extends ConsumerState<TodosNew> {
+class _TodosEditState extends ConsumerState<TodosEdit> {
   final _formKey = GlobalKey<FormState>();
   final title = TextEditingController();
   final description = TextEditingController();
@@ -60,10 +61,16 @@ class _TodosNewState extends ConsumerState<TodosNew> {
                         }, child: const Text("No")),
                         TextButton(onPressed: () {
                           Navigator.of(context).pop(true);
-                        }, child: const Text("Yes"))
+                        },
+                        style: TextButton.styleFrom(
+                          foregroundColor: Theme.of(context).colorScheme.error
+                        ), child: const Text("Yes"),
+                        ),
                       ],
                     )
                 );
+                if (confirmed == true) return true;
+                return false;
               }
               return true;
             },

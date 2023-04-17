@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:todo_app/presentation/view/todos_new.dart';
+import 'package:todo_app/presentation/view/todos_edit.dart';
 import 'package:todo_app/presentation/view/todos_list.dart';
 
 final router = GoRouter(
@@ -11,7 +11,11 @@ final router = GoRouter(
         routes: [
           GoRoute(
               path: 'new',
-              builder: (context, state) => const TodosNew()
+              builder: (context, state) => const TodosEdit()
+          ),
+          GoRoute(
+              path: ':id',
+              builder: (context, state) => TodosEdit(todoId: state.params['id'],)
           )
         ]
     )
