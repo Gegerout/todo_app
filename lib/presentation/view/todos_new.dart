@@ -5,6 +5,7 @@ import 'package:shortid/shortid.dart';
 import 'package:todo_app/domain/models/todo.dart';
 import 'package:todo_app/domain/usecases/module.dart';
 import 'package:todo_app/presentation/viewmodel/module.dart';
+import 'package:todo_app/presentation/widgets/extensions.dart';
 
 class TodosNew extends ConsumerStatefulWidget {
   const TodosNew({Key? key}) : super(key: key);
@@ -17,8 +18,7 @@ class _TodosNewState extends ConsumerState<TodosNew> {
   final _formKey = GlobalKey<FormState>();
   final title = TextEditingController();
   final description = TextEditingController();
-  late final saveTodo = ref.read(saveTodoProvider);
-  late final todosList = ref.read(todosListModel);
+  late final model = ref.read(todosListModel);
   bool isCompleted = false;
 
   @override
@@ -77,8 +77,7 @@ class _TodosNewState extends ConsumerState<TodosNew> {
             final messenger = ScaffoldMessenger.of(context);
             final router = GoRouter.of(context);
 
-            await saveTodo.execute(todo);
-            await todosList.loadTodos();
+            await model.save(todo);
             messenger.toast("Todo saved");
             if(router.canPop()) router.pop();
           }
@@ -87,14 +86,5 @@ class _TodosNewState extends ConsumerState<TodosNew> {
         icon: const Icon(Icons.save),
       ),
     );
-  }
-}
-
-extension on ScaffoldMessengerState {
-  void toast(String message) {
-    showSnackBar(SnackBar(
-      content: Text(message),
-      duration: const Duration(seconds: 2),
-    ));
   }
 }

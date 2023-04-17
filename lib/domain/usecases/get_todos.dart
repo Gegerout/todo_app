@@ -1,5 +1,5 @@
-import '../models/todo.dart';
+import 'package:todo_app/domain/models/todos.dart';
 
 abstract class GetTodosUseCase {
-  Future<void> execute();
+  Future<Todos> execute();
 }

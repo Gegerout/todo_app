@@ -3,14 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todo_app/presentation/viewmodel/module.dart';
 
-import '../../domain/usecases/module.dart';
-
 class TodosList extends ConsumerWidget {
   const TodosList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final todos = ref.watch(todosListState);
+    final model = ref.watch(todosListModel);
 
     return Scaffold(
       appBar: AppBar(
@@ -21,9 +20,17 @@ class TodosList extends ConsumerWidget {
             itemCount: todos.values.length,
             itemBuilder: (context, index) {
               final todo = todos.values[index];
-              return ListTile(
+              return CheckboxListTile(
                 title: Text(todo.title),
                 subtitle: todo.description != null ? Text(todo.description!) : null,
+                value: todo.completed,
+                onChanged: (value) async {
+                  if(value != null) {
+                    final messenger = ScaffoldMessenger.of(context);
+                    final newTodo = todo.copyWith(completed: value);
+                    model.save(newTodo);
+                  }
+                },
               );
             },
           ),

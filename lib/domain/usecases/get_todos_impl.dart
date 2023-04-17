@@ -1,5 +1,6 @@
 import 'package:todo_app/domain/repositories/todos.dart';
 
+import '../models/todos.dart';
 import 'get_todos.dart';
 
 class GetTodosUseCaseImpl extends GetTodosUseCase {
@@ -8,5 +9,5 @@ class GetTodosUseCaseImpl extends GetTodosUseCase {
   GetTodosUseCaseImpl(this.todosRepository);
 
   @override
-  Future<void> execute() => todosRepository.loadTodos();
+  Future<Todos> execute() => todosRepository.loadTodos();
 }
