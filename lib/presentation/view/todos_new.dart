@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shortid/shortid.dart';
 import 'package:todo_app/domain/models/todo.dart';
-import 'package:todo_app/domain/usecases/module.dart';
 import 'package:todo_app/presentation/viewmodel/module.dart';
 import 'package:todo_app/presentation/widgets/extensions.dart';
 
@@ -20,6 +19,22 @@ class _TodosNewState extends ConsumerState<TodosNew> {
   final description = TextEditingController();
   late final model = ref.read(todosListModel);
   bool isCompleted = false;
+  bool edited = false;
+
+  void change() {
+    if(mounted) {
+      setState(() {
+        edited = true;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    title.addListener(change);
+    description.addListener(change);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +47,26 @@ class _TodosNewState extends ConsumerState<TodosNew> {
           child: Form(
             key: _formKey,
             autovalidateMode: AutovalidateMode.always,
+            onWillPop: () async {
+              if(edited) {
+                final confirmed = await showDialog<bool>(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text("Discard changes?"),
+                      content: const Text("Are you sure you want to discard your changes?"),
+                      actions: [
+                        TextButton(onPressed: () {
+                          Navigator.of(context).pop(false);
+                        }, child: const Text("No")),
+                        TextButton(onPressed: () {
+                          Navigator.of(context).pop(true);
+                        }, child: const Text("Yes"))
+                      ],
+                    )
+                );
+              }
+              return true;
+            },
             child: Column(
               children: [
                 TextFormField(
@@ -55,6 +90,7 @@ class _TodosNewState extends ConsumerState<TodosNew> {
                       if (mounted) {
                         setState(() {
                           isCompleted = value!;
+                          edited = true;
                         });
                       }
                     })

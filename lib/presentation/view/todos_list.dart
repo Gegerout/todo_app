@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todo_app/presentation/viewmodel/module.dart';
+import 'package:todo_app/presentation/widgets/extensions.dart';
 
 class TodosList extends ConsumerWidget {
   const TodosList({Key? key}) : super(key: key);
@@ -26,9 +27,8 @@ class TodosList extends ConsumerWidget {
                 value: todo.completed,
                 onChanged: (value) async {
                   if(value != null) {
-                    final messenger = ScaffoldMessenger.of(context);
                     final newTodo = todo.copyWith(completed: value);
-                    model.save(newTodo);
+                    await model.save(newTodo);
                   }
                 },
               );
