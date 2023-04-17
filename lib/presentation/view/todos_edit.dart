@@ -35,6 +35,19 @@ class _TodosEditState extends ConsumerState<TodosEdit> {
     super.initState();
     title.addListener(change);
     description.addListener(change);
+    if(widget.todoId != null) {
+      model.get(widget.todoId!).then((value) {
+        if(value != null) {
+          title.text = value.title;
+          description.text = value.description ?? '';
+          if(mounted) {
+            setState(() {
+            isCompleted = value.completed;
+          });
+          }
+        }
+      });
+    }
   }
 
   @override
